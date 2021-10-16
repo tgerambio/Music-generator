@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -128,27 +130,55 @@ public class Compose {
         }
         } 
 	}
-	
-	public static String findAKey(Object...notes) {
-		
-		return null;
-	}
-	public static void counterpoint(ArrayList<String> chord, int ms, int...prog) {
+	//******************************************************************************************************
+	public static void rc_mergeList(ArrayList<String> scale) {
 		
 		Player p = new Player();
-	    
 		
-		
-		
-		while(true) {
-			
-			
-			
-			
-			
+		for(ArrayList<String> chord : Chord.keyChords(scale)) {
+			recursiveDrop(p, Convert.mergeList(Chord.toSeventh(chord), 4), 8, 4, 100);
 		}
-		
 	}
+	public static void genericProg(Player p, ArrayList<String> scale, int ms, int...progression) {
+		
+		
+	 while(true) {
+		 for(int j = 4; j >=3; j--){
+			
+			for(int i : progression) {
+				recursiveDrop(p, Convert.mergeList(Chord.toSeventh(Chord.keyChords(scale).get(i-1)), j), 4, 4, ms);
+			}
+			}
+		}
+	}
+	public static List<Integer> drop(List<Integer> chord, int index){
+
+		        chord.add(0, chord.get(index -1) -12);
+		        chord.remove(index);
+		        chord.add(index, chord.get(chord.size()-1)-12);
+                chord.remove(chord.size()-1);
+                return chord;
+		}
+
+		public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int count, int drop, int ms){
+		       
+		      
+		         
+		         if(count == 0){
+		           return null;
+		        }
+		     
+                int i = 0;
+		        for(int note : chord){
+		            p.mChannels[0].noteOn(note < 24? note + 60 : note, 75);
+		            Beat.cut(drop%2==1? ms/2 : 0);
+		            i++;
+		        }
+		        Beat.cut(drop%2==0? ms : 0);
+		       
+		        return recursiveDrop(p, drop(chord, drop), count - 1, drop-1, ms);
+		}
+    //**************************************************************************************************************8
 	public static void randomAugtst(ArrayList<String> scale, int loops, int ms) {
 		
 		Player p = new Player();
@@ -213,14 +243,13 @@ public class Compose {
 				while(j<2) { 
 				    
 					List<Integer> midiN = Convert.merge(list.get(outer).get(y));
-					
-
+	                 
 					Runnable r = ()->{
+						
 						for(int h : midiN.subList(9, 17)) {
 							p.mChannels[1].noteOn(h, 100);
 							Beat.cut(ms*2);
-							
-						}
+							}
 					};
 					p.mChannels[1].allNotesOff();
 				    new Thread(r).start();
@@ -349,6 +378,19 @@ public class Compose {
 
 	
 		
+	}
+	public static void poop(ArrayList<String> scale) {
+		
+		Player p = new Player();
+		
+		       scale.stream()
+				    .forEachOrdered((x)->{
+				    
+				    	p.mChannels[0].noteOn(Convert.midiNums(x)[3], 100);
+				    	Beat.cut(220);
+				   
+				    });
+				    
 	}
 	
 	public static void playNote(String note, int range){
