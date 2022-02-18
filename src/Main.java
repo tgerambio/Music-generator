@@ -15,68 +15,60 @@ public class Main{
 
 		public static void main(String[] args){
 			
-	  	    
+			
 			System.out.println("What note?");
 			Scanner input = new Scanner(System.in);
-			String inputString = input.nextLine();
-			String keynote = inputString.substring(0,1).toUpperCase() + inputString.substring(1); 
+			String keyNote = input.nextLine();
+	
 				
-			while(!Arrays.asList(Scale.chromatic).contains(keynote) && 
-			      Note.enharmonicEquivelent(keynote) == null) {
-						System.out.println("That's not a note");
-						keynote = input.nextLine();
-						break;
-						
-				} 
+			while(!Arrays.asList(Scale.chromatic).contains(keyNote.substring(0,1).toUpperCase() + keyNote.substring(1))){
+				  System.out.println("Try again.");
+                  keyNote = input.nextLine();
+            }
+	    	
+			keyNote = keyNote.substring(0,1).toUpperCase() + keyNote.substring(1);
 			
 			input.close();
-			String s = keynote;
 			
-           // Compose.balla(Scale.minor(keynote), 300, 1,5,6,4);
+			Player p = new Player();
+	 
+	        String s =  keyNote;
+	        
+	        int[] prog = {1,6,5,4};
+	        ArrayList<String> scale = Scale.minor(keyNote);
+	        p.mChannels[0].programChange(0);
+	        //Compose.mapper(p, scale, 4, 8, prog, 200);
+	        //Compose.toolProg(p, scale, 180, 7, 5,1,6,4);
+	       // Compose.variantProg(p, Scale.major(keyNote), 4, 120, 1,5,6,4);
+	       // Compose.phraseProg(p, Scale.minor(keyNote), 12, 140, 1,5,6,4);
+	        //Compose.phraseProg(p, Scale.major(keyNote), 8, 140, 1,3,2,4);
+	       
+          // Compose.octaveChanges(p, Scale.minor(keyNote), 6, 140, 1,5,6,4);
+	        Compose.progClassTest1(p, keyNote, 120);
+	      // Compose.ammendPhrase(p, Scale.minor(keyNote), 8, 200, 4,1,3,7);
+	       Compose.shuffle(p, Scale.minor(keyNote));
+	       // Compose.arpeggiProg(p, Scale.minor(keyNote), 110, new int[] {0,1,2,1,3,2,1,4}, 1,5,6,4);
+	        
+	        //Compose.codeMusic(p, Scale.harmonicMin(s), 180, 1,5,6,3,4,1,4,5);
+	       
+	        
+	        
+	        
+	        //Compose.zoo(p, Scale.major(s), 180, 3, Convert.random(2, 4), 1,5,6,4,5,4,6,5);
+	        
+	        
+	        
+		   
 			
-            Runnable r = ()-> Compose.recurseShell(s, 220);
 			
-			new Thread(r).start();
-	
-
-		
-
-			
-
-
-			
-			/*
-			for(ArrayList<String> mode : Scale.modes(Scale.major(keynote))) {
-		    	
+			//Compose.testGraph(p,keyNote, 200);
 		    
-				Compose.progTest(Scale.major(Modulation.circleOfFifths(mode.get(Convert.random(0,mode.size()))).get(1).get(1)), 100);
-			    Compose.progTest(mode, 100);
+		 
+		    
 			
-			}
-			
-		
-			
+		    
+		 
 			
 			
-			/*
-			
-			for(String note : Scale.chromatic) {
-				
-				Runnable x = ()-> Compose.go(Scale.pentatonic(note), 12, 8, 300);
-				Runnable y = ()-> Compose.go(Scale.minor(note), 12, 8, 300);
-				 
-				  while(true) {
-					new Thread(x).start();
-					Beat.cut(200);
-					new Thread(y).start();
-					System.out.println(Thread.activeCount());
-					x.run();
-				 
-					//Beat.cut(2500);
-			
-		          }
-			  
-			}	
-			*/
 }
 }
