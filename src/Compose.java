@@ -70,6 +70,54 @@ public class Compose {
 	    }
 	}
 	//*******************************************************************************
+	
+	public static void blues(Player p, ArrayList<String> scale, int measures, int ms, int...prog) {
+	  // List<Integer> midiBlue = Convert.mergeList(Scale.blues(scale.get(0)), 4);
+	   //for(int i = 0; i < 8; i++) midiBlue.add(midiBlue.get(i)+12);
+	   ArrayList<String> minBlues = Scale.blues(scale.get(0));
+	   ArrayList<String> majBlues = Scale.blues(scale.get(0));
+	   Collections.rotate(majBlues, 1);
+	   int solo = Convert.random(0, 4);
+	  
+	   while(true) {
+		   for(int c : prog) {
+			   
+			  List<Integer>midiBlue = Convert.toMidi(Chord.isMajor(Chord.keyChords(scale).get(c-1)) ? majBlues : minBlues, 4);
+			  if(Chord.isMajor(Chord.keyChords(scale).get(c-1))) {
+				  
+			  }
+			  p.mChannels[1].allNotesOff();
+	          ArrayList<Integer> midi = Convert.toMidi(Chord.bluesItUp(Chord.keyChords(scale).get(c-1)), 2);
+	          int velocity = 100;
+			  for(int i = 0; i < measures; i++) {
+				   
+				  if(Convert.random(0, 8) < 5) {
+					   p.mChannels[1].noteOn(midiBlue.get(solo<0? midiBlue.size() + solo : solo % midiBlue.size()), velocity);
+					   solo += Convert.random(-2, 3);
+				   }
+				   
+				   
+				   for(int note : midi) {
+					   int r = Convert.random(0, 3);
+					   if(r == 0) {
+						   p.mChannels[0].noteOn(midiBlue.get(solo<0? midiBlue.size() + solo : solo % midiBlue.size()), 70);
+						   solo += Convert.random(-2, 3);
+						  
+					   }
+					  
+					   p.mChannels[0].noteOn(note + (12* (r == 0 ? -1 : 1)), velocity);
+					   Beat.swing(ms);
+					   velocity -=5;
+				   }
+				   
+				   if(Convert.random(0, 2) == 0) {
+					   p.mChannels[1].noteOn(midiBlue.get(solo<0? midiBlue.size() + solo : solo % midiBlue.size())+(12*Convert.random(-2, 1)), velocity);
+					   solo += Convert.random(-2, 3);
+				   }
+               }
+		   }
+	   }
+   }
 	public static void balla(ArrayList<String> scale,  int ms, int...progression) { // minor 1,5,6,4 !!
 		
 		
