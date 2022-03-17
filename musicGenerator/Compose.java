@@ -329,6 +329,172 @@ public class Compose {
 		}
 	}
 	
+	public static void salsa(Player p, ArrayList<String> scale, int ms) {
+		
+		Map<Integer, Integer> map = new HashMap<>();
+		
+		while(true) {
+			    
+			    int i = Convert.random(0, scale.size());
+			    ArrayList<String> chord = Chord.keyChords(scale).get(i);
+			    chord.add(chord.get(1));
+			    List<Integer> midi = Convert.toMidi(chord, 3);
+			   
+			    for(int  b = 0; b < 8; b++) {
+			    	
+			    	if(Convert.random(0, 2) == 0) {
+			    		
+			    		map.put(b, midi.get(Convert.random(0, midi.size())));
+			    	}
+			    }
+			    
+			    for(int bb = 0; bb < 2; bb++) {
+			    	
+			    	if(bb > 0) {
+			    		
+			    		for(Map.Entry<Integer, Integer> e : map.entrySet()) {
+			    			
+			    			int eVal = e.getValue();
+			    			
+			    			while(!Convert.toMidi(scale).contains(++eVal)) {
+			    				
+			    				if(eVal > 80) {
+			    					
+			    					eVal -= 24;
+			    				}
+			    			}
+			    			map.put(e.getKey(), eVal);
+			    		}
+			    	}
+			    	
+			    	for(int m = 0; m < 2; m++) {
+			    		
+			    		if(Convert.random(0, 4) == 0) {
+			 
+					    	for(int beat = 0; beat < 7; beat++) {
+					    		
+					    		p.mChannels[0].allNotesOff();
+					    		p.mChannels[1].allNotesOff();
+					    		
+					    		if(map.containsKey(beat)) {
+					    			
+					    			int note = map.get(beat) + (beat%3==0 ? -12 : 0);
+					    			p.mChannels[1].noteOn(note+12, 75);
+					    		
+					    		
+					    		}
+					    		if(Beat.counter%3 == 0) {
+					    			p.mChannels[0].noteOn(Convert.toMidi(chord, 1).get(0), 75);
+					    		}
+					    	}
+			    		}
+			    	}
+			    	
+			    	int a = Beat.counter;
+			    	
+			    	p.mChannels[9].noteOn(67, a%4 == 0 ? 0 : 75);
+				    p.mChannels[9].noteOn(63, a%7==0 || a%8 == 0 ? 100 : 0);
+				    p.mChannels[9].noteOn(56, a%7==0 || a%3 == 0 ? 100 : 0);
+
+				    Beat.cut(ms);
+				    		
+				    }
+			    
+			    	for(int fix = 0; fix < 2; fix++) {
+			    		
+			    		p.mChannels[0].allNotesOff();
+			    		
+			    		if(map.containsKey(fix)) {
+			    			
+			    			int note = map.get(fix);
+			    		    p.mChannels[0].noteOn(note, 100);
+			    			
+			    		}
+			    		
+			    		int a = Beat.counter;
+			    		
+			    		p.mChannels[9].noteOn(67, a%4 == 0 ? 20 : 75);
+			    		p.mChannels[9].noteOn(56, a%7==0 || a%3 == 0 ? 100 : 20);
+			    		p.mChannels[9].noteOn(63, a%7==0 || a%8 == 0 ? 100 : 20);
+                        
+			    		if(a%3==0) {
+			    			p.mChannels[0].noteOn(Convert.toMidi(chord, 1).get(1), 75);
+
+                        }
+			    		
+			    		Beat.cut(ms);
+			    	} 
+		}
+			    
+			
+		
+		
+	}
+	
+	public static void variations(Player p, ArrayList<String> scale, int ms, int...progression){  // 1,4,5,4
+		
+		ArrayList<Map<Integer, Integer>> beatMap = phrases(4, 8, scale.size()-1, 75);
+		
+		
+		while(true){
+		
+			int over8 = Convert.random(3, 8); // MAYBE PLACE 1-2 LOOPS DEEPER FOR VARIATION?
+			int ph = Convert.random(0, beatMap.size());
+			int leftRight = Convert.random(0, 2);
+			
+			for(int c : progression){
+				
+				ArrayList<String> chord = Chord.keyChords(scale).get(c-1);
+				List<Integer> midi = Convert.toMidi(chord).subList(3, 13);
+				//int leftRight = Convert.random(0, 2);
+				 
+				
+				for(int i = 0; i < 2; i++){
+					
+					for(int b = 0; b < over8; b++){
+
+						if(beatMap.get(ph).containsKey(b)){
+							p.mChannels[0].noteOn(midi.get(Convert.random(0, midi.size())) ,60);
+						
+						
+					}
+					
+					if(b > 0) {
+
+						for(Entry<Integer, Integer> entry : beatMap.get(ph).entrySet()){
+				
+							beatMap.get(ph).put(entry.getKey(), entry.getValue()+2);
+						}
+					} 
+					
+					Beat.cut(leftRight == 0 ? ms : 0);
+
+				} 
+
+					
+				for(int fix = 0; fix < (16 - (over8 * 2)); fix++){
+
+					int xx = Convert.random(0, over8);
+					if(beatMap.get(ph).containsKey(xx)){
+						p.mChannels[0].noteOn(midi.get(beatMap.get(ph).get(xx) % midi.size())+12 ,60);
+					}
+					
+					Beat.cut(leftRight == 0 ? 0 : ms);
+				}
+
+			}
+		}
+			for(int i = 0; i < progression.length; i++) {
+				if(progression[i] == scale.size()) {
+					progression[i] = 1;
+				}else {
+					progression[i]++;
+				}
+			} Modulation.toRelativeMinOrMaj(scale);
+		}
+	}
+
+	
 	public static void fifths4thsandOctaves(Player p, int note, int ms) {
 		
 		int[] changes = { -5, 7, 12, 5, -7 };
@@ -1805,7 +1971,7 @@ public static void playChord(ArrayList<String> chord, int howManyTimes, int ms) 
 		   }
 	   }
    }
-   public Map<Integer, List<Integer>> Musikalisches_Würfelspiel(ArrayList<String> scale, int beats, int tempo){
+   public Map<Integer, List<Integer>> Musikalisches_WÃ¼rfelspiel(ArrayList<String> scale, int beats, int tempo){
 	   Map<Integer, List<Integer>> map = new HashMap<>();
 	   for(ArrayList<String> mode : Scale.modes(scale)) {
 		   
