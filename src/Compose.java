@@ -235,7 +235,71 @@ public class Compose {
 			Beat.cut(440);
 		}
 	}
-	
+	public static void vLMod(Player p, ArrayList<String> scale, int ms, int[] arpPattern, int...prog){
+        
+    	
+    	int xx = 0;
+    	int invert = Convert.random(0, 3);
+    	int newKeyC = 0;
+    	int[] dV = {1, 2, 6, 4};
+    	while(true){
+
+    		for(int c : prog){
+
+    			ArrayList<String> chord = Chord.enrich(Chord.keyDeg(scale, c-1), 1);
+    			ArrayList<String> dom = Modulation.secondaryDominant(chord);
+    			ArrayList<String> dom2 = Chord.keyDeg(Scale.major(dom.get(0)), newKeyC++);
+    			ArrayList<String> dom3 = Modulation.secondaryDominant(dom2);
+    			ArrayList<String> dom4 = Chord.keyDeg(Scale.minor(dom2.get(0)), 1);
+
+ 
+    			Chord.invert(chord, invert++ % 4);
+    			Chord.invert(dom, invert%4 *-1);
+    			Chord.invert(dom2, invert%4);
+    			Chord.invert(dom3, invert%4 *-1);
+               
+    		
+    			arpeggioDonut(p, dom4, 2, 4, dV[xx%4], ms, arpPattern);
+
+    			p.play(Convert.midiNums(dom3.get(1))[3]);
+    			arpeggioDonut(p, dom3, 2, 4, dV[xx %4], ms, arpPattern);
+    			p.play(Convert.midiNums(dom2.get(1))[3]);
+                
+    			arpeggioDonut(p, dom2, 2, 4, dV[xx%4], ms, arpPattern);
+    			p.play(Convert.midiNums(dom.get(1))[3]);
+
+    			arpeggioDonut(p, dom, 2, 4, dV[xx%4], ms, arpPattern);
+    			p.play(Convert.midiNums(chord.get(1))[3]);
+
+    			arpeggioDonut(p, chord, 2, 4, dV[xx%4],  ms, arpPattern);
+                
+    			xx++;
+    		}
+    		
+    		
+    	}
+    	
+    	
+    	
+    }
+    
+    public static void arpeggioDonut(Player p, ArrayList<String> chord, int octave, int count, int playOff, int ms, int...pattern) {
+ 	   
+ 	   List<Integer> midi = Convert.toMidi(chord);
+ 	   int velocity = 100;
+ 	   int c = octave;
+ 	   
+ 	   while(c < count) {
+ 		  
+ 		   for(int i : pattern) {
+ 			   
+ 			   p.mChannels[0].noteOn(midi.get(i)+(12*c), Beat.counter% playOff == 1 ? 0 : velocity--);
+ 			   Beat.cut(ms);
+ 		   }
+ 		   c++;
+ 	   }
+ 	   return;
+    }
 	public static void windModes(ArrayList<String> scale, int beats, int ms, int...progression) {
 		
 		Player p = new Player();
