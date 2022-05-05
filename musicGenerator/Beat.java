@@ -11,6 +11,7 @@ public class Beat {
 		catch( InterruptedException e ) {
 	       	 	e.printStackTrace();
 	   	 }
+		 counter++;
 	}
 	
 	public static void swing(int ms) {
