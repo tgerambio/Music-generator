@@ -46,12 +46,12 @@ public class Chord {
 		   
 		    
 		    ArrayList<ArrayList<String>> chords = new ArrayList<ArrayList<String>>();
-			ArrayList<String> triad = new ArrayList<String>();
-			ArrayList<ArrayList<String>> modes = Scale.modes(scale);
+		    ArrayList<String> triad = new ArrayList<String>();
+		    ArrayList<ArrayList<String>> modes = Scale.modes(scale);
 			
 			
 			
-			for(int i = 0; i < modes.size(); i++) {
+		    for(int i = 0; i < modes.size(); i++) {
 			//	triad.add(degree.get(i));
 			
 				triad.add(modes.get(i).get(0));
@@ -62,15 +62,16 @@ public class Chord {
 				triad.removeAll(triad);
 				
 				
-			} return chords;
+			} 
+			return chords;
 			
 			
     }	
 	public static ArrayList<String> toFlat(ArrayList<String> chord){
 		
 		return chord.stream()
-				    .map((x)-> Note.toFlat(x))
-				    .collect(Collectors.toCollection(ArrayList::new));
+			    .map((x)-> Note.toFlat(x))
+		            .collect(Collectors.toCollection(ArrayList::new));
 	}
 	public static ArrayList<String> randomAugment(ArrayList<String> chord){ 
     
@@ -114,21 +115,21 @@ public class Chord {
 	
 	public static ArrayList<String> major(String rootNote){
 		ArrayList<String> chord = new ArrayList<String>();
-	    chord.add(Scale.major(rootNote).get(0));
-	    chord.add(Scale.major(rootNote).get(2));
-	    chord.add(Scale.major(rootNote).get(4));
+	    	chord.add(Scale.major(rootNote).get(0));
+	    	chord.add(Scale.major(rootNote).get(2));
+	    	chord.add(Scale.major(rootNote).get(4));
 	
-	    return chord;
+	    	return chord;
 	 
 	}
    
-    public static ArrayList<String> minor(String rootNote){
-    	ArrayList<String> chord = new ArrayList<String>();
-    	chord.add(Scale.minor(rootNote).get(0));
-    	chord.add(Scale.minor(rootNote).get(2));
-    	chord.add(Scale.minor(rootNote).get(4));
+    	public static ArrayList<String> minor(String rootNote){
+    		ArrayList<String> chord = new ArrayList<String>();
+    		chord.add(Scale.minor(rootNote).get(0));
+    		chord.add(Scale.minor(rootNote).get(2));
+    		chord.add(Scale.minor(rootNote).get(4));
 	 
-    	return chord;
+    		return chord;
 	 
     }
     
@@ -179,11 +180,11 @@ public class Chord {
     	ArrayList<String> chord = new ArrayList<String>();
     	ArrayList<String> scale = Scale.major(rootNote);
     	chord.add(rootNote);
-		chord.add(scale.get(2));
-		chord.add(scale.get(4));
-	    chord.add(Note.toFlat(scale.get(6)));
-	    return chord;
-	 }
+	chord.add(scale.get(2));
+	chord.add(scale.get(4));
+        chord.add(Note.toFlat(scale.get(6)));
+	return chord;
+     }
  
     public static ArrayList<String> seventh(String rootNote){
 	 
@@ -203,14 +204,14 @@ public class Chord {
     	ArrayList<String> chord = new ArrayList<String>();
     	List<String> scale = Scale.major(rootNote);
 	 
-		chord.add(rootNote);
-		chord.add(scale.get(2));
-		chord.add(scale.get(4));
-	    chord.add(scale.get(6));
-		 
-		return chord;
+	chord.add(rootNote);
+	chord.add(scale.get(2));
+	chord.add(scale.get(4));
+ 	chord.add(scale.get(6));
+		 	
+	return chord;
 		
-	 }
+    }
  
     public static ArrayList<String> dim(String rootNote){
 	 
