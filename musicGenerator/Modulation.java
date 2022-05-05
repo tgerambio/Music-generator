@@ -31,7 +31,7 @@ public class Modulation {
 			
 			circle.add(new ArrayList<String>(majMinDim));
 		}
-		    return circle;
+	        return circle;
 		
 		
 }
@@ -49,7 +49,8 @@ public class Modulation {
 			list.add(new ArrayList<ArrayList<String>>(scales));
 			
 			
-		} return list;
+		}
+		return list;
 		
 	}
 	
@@ -62,18 +63,16 @@ public class Modulation {
 		for(List<String> roots : circleOfFifths(note)) {
 			
 			for(int i = 0; i < roots.size(); i++) {
-					chord = i==0? Chord.major(roots.get(i)) : i==1? Chord.minor(roots.get(i)) :
-						    Chord.dim(roots.get(i));
+					chord = i==0? Chord.major(roots.get(i)) : i==1? Chord.minor(roots.get(i)) : Chord.dim(roots.get(i));
 					
 					slice.add(new ArrayList<String>(chord));
 					
 				
 				
 			} cir.add(new ArrayList<ArrayList<String>>(slice));
-			  slice.clear();
+			slice.clear();
 		} 
-		
-		  return cir;
+		return cir;
 		
 	}
 	public static ArrayList<ArrayList<ArrayList<String>>> progList(ArrayList<String> scale){
@@ -81,28 +80,28 @@ public class Modulation {
 		ArrayList<ArrayList<ArrayList<String>>> list = new ArrayList<ArrayList<ArrayList<String>>>();
        
 		for(int i = 0; i < 5; i++) {
-        	list.add(new ArrayList<ArrayList<String>>());
-        }
+        		list.add(new ArrayList<ArrayList<String>>());
+       		 }
 		
 		list.get(0).add(Chord.major(scale.get(0)));
 		list.get(0).add(Chord.minor(scale.get(5)));
 		list.get(1).add(Chord.dom7(scale.get(4)));
-        list.get(1).add(Chord.dim(scale.get(6)));
-        list.get(2).add(Chord.minor(scale.get(1)));
-        list.get(2).add(Chord.major(scale.get(3)));
-        list.get(3).add(Chord.minor(scale.get(5)));
-        list.get(4).add(Chord.minor(scale.get(2)));
+        	list.get(1).add(Chord.dim(scale.get(6)));
+        	list.get(2).add(Chord.minor(scale.get(1)));
+        	list.get(2).add(Chord.major(scale.get(3)));
+        	list.get(3).add(Chord.minor(scale.get(5)));
+        	list.get(4).add(Chord.minor(scale.get(2)));
         
-        return list;
+        	return list;
 
 	}
-public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> scale){
+	public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> scale){
 		
 		ArrayList<ArrayList<ArrayList<String>>> list = new ArrayList<ArrayList<ArrayList<String>>>();
        
 		for(int i = 0; i < 5; i++) {
-        	list.add(new ArrayList<ArrayList<String>>());
-        }
+        		list.add(new ArrayList<ArrayList<String>>());
+        	}
 		
 		list.get(0).add(Chord.major(scale.get(0)));
 		list.get(0).add(Chord.seventh(scale.get(0)));
@@ -110,20 +109,20 @@ public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> 
 		list.get(0).add(Chord.minor(scale.get(5)));
 		list.get(0).add(Chord.min7(scale.get(5)));
 		list.get(1).add(Chord.dom7(scale.get(4)));
-        list.get(1).add(Chord.dim(scale.get(6)));
-        list.get(2).add(Chord.minor(scale.get(1)));
-        list.get(2).add(Chord.min7(scale.get(1)));
+        	list.get(1).add(Chord.dim(scale.get(6)));
+        	list.get(2).add(Chord.minor(scale.get(1)));
+        	list.get(2).add(Chord.min7(scale.get(1)));
 
-        list.get(2).add(Chord.major(scale.get(3)));
-        list.get(2).add(Chord.maj7(scale.get(3)));
+        	list.get(2).add(Chord.major(scale.get(3)));
+        	list.get(2).add(Chord.maj7(scale.get(3)));
 
-        list.get(3).add(Chord.minor(scale.get(5)));
-        list.get(3).add(Chord.min7(scale.get(5)));
+       		 list.get(3).add(Chord.minor(scale.get(5)));
+       		 list.get(3).add(Chord.min7(scale.get(5)));
 
-        list.get(4).add(Chord.minor(scale.get(2)));
-        list.get(4).add(Chord.min7(scale.get(2)));
+        	list.get(4).add(Chord.minor(scale.get(2)));
+        	list.get(4).add(Chord.min7(scale.get(2)));
 
-        return list;
+        	return list;
 
 	}
 	
@@ -135,21 +134,23 @@ public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> 
 			modal.add(new ArrayList<>(scale));
 			Compose.leftShift(scale, 1);  // should not get this from Class compose
 		
-		} return modal;
+		} 
+		return modal;
 	}
 	
     public static ArrayList<String> keyId(ArrayList<String> chord){// returns a list of keys input chord is in
 		
-	    ArrayList<String> keys = new ArrayList<String>();
+	        ArrayList<String> keys = new ArrayList<String>();
 		Map<String, ArrayList<ArrayList<String>>> all = Modulation.allKeyChords(false);
 		
 		for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : all.entrySet()) {
 			 if(entry.getValue().contains(chord)) {
 				 keys.add(entry.getKey());
-	       } 
-       } return  keys;
+	      		 } 
+       		} 
+	    	return  keys;
 		
-}	
+   }	
     
     
     
@@ -174,13 +175,13 @@ public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> 
 		}     //System.out.println("test" + possKeys);
 		
 		possKeys.entrySet() // sorting  key occurences by number, and indexing into list, *low to high
-	            .stream()
-	            .sorted(Map.Entry.comparingByValue())
-	            .forEachOrdered(x -> allPossKeys.add(x.getKey()));
+	                .stream()
+	            	.sorted(Map.Entry.comparingByValue())
+	            	.forEachOrdered(x -> allPossKeys.add(x.getKey()));
 		
-	   Collections.reverse(allPossKeys);  //reverses(highest number should be first)
+	   	Collections.reverse(allPossKeys);  //reverses(highest number should be first)
 	    
-	   return allPossKeys;
+	   	return allPossKeys;
 	}
 	
 	
@@ -218,11 +219,11 @@ public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> 
 		  
 		 if(print) {
 			  for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : x.entrySet()) {
-		         System.out.println("Key: " + entry.getKey() + entry.getValue());
+		         	System.out.println("Key: " + entry.getKey() + entry.getValue());
 			  } 
 		  }  
 		  return x;
-	 }	
+		 }	
 	
 
-}
+	}
