@@ -20,8 +20,8 @@ import javax.sound.midi.Synthesizer;
 public class Compose {
 	
   /*
-		Synthesizer midiSynth = MidiSystem.getSynthesizer();
-		midiSynth.open();
+	Synthesizer midiSynth = MidiSystem.getSynthesizer();
+	midiSynth.open();
         Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
         MidiChannel[] mChannels = midiSynth.getChannels();
         midiSynth.loadInstrument(instr[0]);
@@ -73,7 +73,7 @@ public class Compose {
 		
 		
 		Player p = new Player();
-        p.open();
+        	p.open();
 		p.mChannels[0].programChange(1);  // 32! 
 		
 		ArrayList<ArrayList<String>> prog = new ArrayList<ArrayList<String>>();
@@ -83,26 +83,26 @@ public class Compose {
 			prog.add(all.get(x-1));
 		}
 		
-        while(true) {
+        	while(true) {
         
-	    for(ArrayList<String> chord : prog) {
+	    		for(ArrayList<String> chord : prog) {
 			
-	    	for(int i = 2; i >=0; i--) {
+	    			for(int i = 2; i >=0; i--) {
 				
 			    
-				List<Integer> midi = Convert.toMidi(Chord.addPassingTone(chord, i));
-			    int start = midi.indexOf(Convert.lowestNotes().get(chord.get(0)));
+					List<Integer> midi = Convert.toMidi(Chord.addPassingTone(chord, i));
+			    		int start = midi.indexOf(Convert.lowestNotes().get(chord.get(0)));
 			    
-				List<Integer> m = midi.subList(start+4, start + 20);
+					List<Integer> m = midi.subList(start+4, start + 20);
 				
-				p.mChannels[0].noteOn(midi.get(start), 100);
+					p.mChannels[0].noteOn(midi.get(start), 100);
 				
 				
 				
-				Runnable r = ()->{
+					Runnable r = ()->{
 					
-					int velocity = 100;
-					for(int ind = start + 19; ind >= start + 15; ind--) {
+						int velocity = 100;
+						for(int ind = start + 19; ind >= start + 15; ind--) {
 						p.mChannels[0].noteOn(midi.get(ind), velocity);
 						Beat.cut(ms*2);
 						velocity -= 10;
@@ -116,7 +116,7 @@ public class Compose {
 					p.mChannels[0].noteOn(x, 100);
 					Beat.cut(ms);
 				
-		        }
+		        	}
 				if(i==0){
 					for(int y : m){
 						p.mChannels[0].noteOn(y, 100);
@@ -130,15 +130,16 @@ public class Compose {
 	//******************************************************************************************************
 	public static void bigOne(ArrayList<String> scale, int cutMs, int latency, int ms, int...progression) { //   major  4,7,3,6,2,3,1
 		   
-		   Player p = new Player();
-		   Runnable e =()-> Compose.genericProg(p, scale,ms, progression); 
+		Player p = new Player();
+		Runnable e =()-> Compose.genericProg(p, scale,ms, progression); 
 
     	
-	       new Thread(e).start();
-		   Beat.cut(cutMs);
-		   new Thread(e).start();
+	       	new Thread(e).start();
+		   	Beat.cut(cutMs);
+		   	new Thread(e).start();
 		   
 	}
+	
 	public static void rc_mergeList(ArrayList<String> scale) {
 		
 		Player p = new Player();
@@ -147,20 +148,22 @@ public class Compose {
 			recursiveDrop(p, Convert.toMidi(Chord.toSeventh(chord), 4), 8, 4, 4, 100);
 		}
 	}
+	
 	public static void genericProg(Player p, ArrayList<String> scale, int ms, int...progression) {
 		
 		
-	 while(true) {
-		 for(int j = 4; j >=3; j--){
+	 	while(true) {
+		 	for(int j = 4; j >=3; j--){
 			
-			for(int i : progression) {
+				for(int i : progression) {
 				
-				recursiveDrop(p, Convert.toMidi(Chord.toSeventh(Chord.keyChords(scale).get(i-1)), j), 4, 4, 4, ms);
-			    // recursiveDrop(p, Convert.mergeList(Chord.augment(Chord.keyChords(scale).get(i-1), 2), j), 4, 4, 4, ms);
-			}
+					recursiveDrop(p, Convert.toMidi(Chord.toSeventh(Chord.keyChords(scale).get(i-1)), j), 4, 4, 4, ms);
+			    		// recursiveDrop(p, Convert.mergeList(Chord.augment(Chord.keyChords(scale).get(i-1), 2), j), 4, 4, 4, ms);
+				}
 			}
 		}
 	}
+	
 	public static int[] intervals() {
 		return new int[] {0,3,7,8};
 	}
@@ -177,33 +180,35 @@ public class Compose {
 			for(int b = 0; b < beats; b++) {
 				int rand = Convert.random(0, 3);
 				if(b==0 || b==beats/2) {
-			    p.mChannels[0].noteOn(Convert.midiNums(modes.get(degree-1).get(0))[1], 100);
+			    		p.mChannels[0].noteOn(Convert.midiNums(modes.get(degree-1).get(0))[1], 100);
 				}
-			    //p.mChannels[0].noteOn(Convert.midiNums(modes.get(degree-1).get(4))[2], b%2==1? 0 : 100);
-	            if(rand % 2==0) {
-	               int rNote = Convert.random(3,6);
-	               int rOctave = Convert.random(2,4);
+			    	//p.mChannels[0].noteOn(Convert.midiNums(modes.get(degree-1).get(4))[2], b%2==1? 0 : 100);
+	            		if(rand % 2==0) {
+	               		int rNote = Convert.random(3,6);
+	               		int rOctave = Convert.random(2,4);
 	               
-	               p.mChannels[0].noteOn(Convert.midiNums(modes.get(degree-1).get(rNote))[rOctave], 100);
-	               Beat.cut(ms);
-	            }
-	            }
-			}
+	               		p.mChannels[0].noteOn(Convert.midiNums(modes.get(degree-1).get(rNote))[rOctave], 100);
+	               		Beat.cut(ms);
+	            		}
+	            	}
 		}
 	}
-	   public static List<Integer> drop(List<Integer> chord, int index){ // index not 0-base!! ex.. C maj (1) is note C 
-                if(index < 1 || index > chord.size()) {
-                	return chord;
-                }
-		        chord.add(0, chord.get(index -1) -12);
-		        chord.remove(index);
-		        chord.add(index, chord.get(chord.size()-1)-12);
-                chord.remove(chord.size()-1);
+}
+	
+public static List<Integer> drop(List<Integer> chord, int index){ // index not 0-base!! ex.. C maj (1) is note C 
+                
+	if(index < 1 || index > chord.size()) {
                 return chord;
-		}
+        }
+        chord.add(0, chord.get(index -1) -12);
+	chord.remove(index);
+        chord.add(index, chord.get(chord.size()-1)-12);
+        chord.remove(chord.size()-1);
+        return chord;
+}
 
-		public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int count, int drop, int latency, int ms){
-		        p.mChannels[0].noteOff(ms);
+public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int count, int drop, int latency, int ms){
+		    p.mChannels[0].noteOff(ms);
 		       
 		         
 		         if(count == 0){
