@@ -38,8 +38,8 @@ public class Scale {
 	   x.add(scale.get(2));
 	   x.add(scale.get(4));
 	   x.add(scale.get(0));
-       x.add(scale.get(1));
-       x.add(scale.get(2));
+       	   x.add(scale.get(1));
+       	   x.add(scale.get(2));
 
 	   return x;
    }
@@ -50,8 +50,10 @@ public class Scale {
 	  int modlength = o + 12;                                                                     
 	 	     
 	  for (int k = o; k < modlength; k++) {                                                     
-	 		   if ((k==(o+1)) || (k==(o+3)) || (k==(o+6)) || (k==(o+8)) || (k==(o+10))) continue; 
-		       majScale.add(chromatic[k]);                                                         
+	 	 if ((k==(o+1)) || (k==(o+3)) || (k==(o+6)) || (k==(o+8)) || (k==(o+10))){
+	         	continue; 
+		 }
+		 majScale.add(chromatic[k]);                                                         
 	  } 
 	  return majScale;
   } 
@@ -66,10 +68,11 @@ public class Scale {
 		   if ((k==(o+1)) || (k==(o+4)) || (k==(o+6)) || (k==(o+9)) || (k==(o+11))) continue; 
 		   minScale.add(chromatic[k]);
 		    
-	  } 
-      return minScale;
+	} 
+        return minScale;
 		    
   }
+	
   public static ArrayList<String> harmonicMaj(String keyNote){
 	  
 	  ArrayList<String> scale = major(keyNote);
@@ -81,7 +84,7 @@ public class Scale {
 	  ArrayList<String> minScale = new ArrayList<String>(Scale.minor(keyNote));
 	  minScale.set(6, Note.toSharp(minScale.get(6)));
 	 
-      return minScale;
+      	  return minScale;
 	  
   }
   
@@ -102,20 +105,20 @@ public class Scale {
 	 
 	  ArrayList<String> pentScale = new ArrayList<String>();
 	  int o = Arrays.asList(chromatic).indexOf(keynote.substring(0,1).toUpperCase()+keynote.substring(1));
-      int modlength = o + 12;
+      	  int modlength = o + 12;
 	  
-      for (int k = o; k < modlength; k++) {                                                      
+      	  for (int k = o; k < modlength; k++) {                                                      
 		   if ((k==(o+1)) || (k==(o+2)) || (k==(o+4)) || (k==(o+6)) || (k==(o+8)) ||  (k==(o+9)) || (k==(o+11))) continue; 
 		   pentScale.add(chromatic[k]);
 		    
 	  } 
-      return pentScale;
+      	  return pentScale;
   }
   
   public static ArrayList<String> blues(String keynote){
 	 
-	  ArrayList<String> bluesScale = new ArrayList<String>();
-	  int o = Arrays.asList(chromatic).indexOf(keynote.substring(0,1).toUpperCase()+keynote.substring(1));
+ArrayList<String> bluesScale = new ArrayList<String>();
+      int o = Arrays.asList(chromatic).indexOf(keynote.substring(0,1).toUpperCase()+keynote.substring(1));
       int modlength = o + 12;
 	  
       for (int k = o; k < modlength; k++) {                                                      
@@ -123,7 +126,7 @@ public class Scale {
 		   bluesScale.add(chromatic[k]);
 		    
 	  } 
-      return bluesScale;
+          return bluesScale;
   }
   
   public static ArrayList<ArrayList<String>> modes(ArrayList<String> scale){
@@ -138,11 +141,12 @@ public class Scale {
       } 
       return modal;
    }
+	
    public static boolean isMajor(ArrayList<String> scale) {
         
 	    ArrayList<Integer> m = Convert.toMidi(scale, 0);	 
 	    
-	   	return m.get(2) - m.get(0) == 4;
-}
+	    return m.get(2) - m.get(0) == 4;
+   }
 }  
   
