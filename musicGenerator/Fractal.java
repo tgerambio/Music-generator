@@ -19,8 +19,8 @@ public class Fractal {
 		  ArrayList<Integer> midi1 = Convert.toMidi(scale, 4);
 		  p.mChannels[1].allNotesOff();
 		  chord.add(chord.get(0));
-          int solo = Convert.random(0, midi1.size());
-          int velocity = 100;
+          	  int solo = Convert.random(0, midi1.size());
+         	  int velocity = 100;
 		  for(int i = 0; i < measures; i++) {
 			  ArrayList<Integer> midiC = Convert.toMidi(chord, 2);
 			  
@@ -48,6 +48,6 @@ public class Fractal {
 				   solo += Convert.random(-2, 3);
 			   }
          
-	   }
+	   	}
 	}
 }
