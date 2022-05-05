@@ -22,11 +22,11 @@ public class Player {
 		this.midiSynth = MidiSystem.getSynthesizer();
 	} 
 	catch (MidiUnavailableException e) {
-			e.printStackTrace();
+		e.printStackTrace();
 	}
     	
     	this.instr = midiSynth.getDefaultSoundbank().getInstruments();
-    	this.mChannels = midiSynth.getChannels(); // previously this.mChannels
+    	this.mChannels = midiSynth.getChannels(); 
     	try {
 		midiSynth.open();
 	} 
@@ -38,6 +38,6 @@ public class Player {
     }
 	
     public void play(int note) {
-       this.mChannels[0].noteOn(note, 100);
+    	this.mChannels[0].noteOn(note, 100);
     }
 }
