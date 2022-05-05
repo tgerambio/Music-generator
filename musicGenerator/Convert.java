@@ -22,7 +22,7 @@ public class Convert {
 	    	x.put(Note.chromatic[i], j);
 	    } 
 	    return x;
-    }	
+    	}	
 	
 	
 	public static int random(int min, int max) { // random in from min to max-1, inclusive
@@ -55,7 +55,7 @@ public class Convert {
 		}
 		return all;
 			
-    }
+    	}
 	
 	public static List<int[]> toNums(List<String> scale){ //returns int[] of each midi numeric value for each octave in given scale.
 		
@@ -79,6 +79,7 @@ public class Convert {
 		
 		
 	}
+	
 	public static List<Integer> toMidi(ArrayList<String> chord){ // can also be a scale
 			
 			ArrayList<Integer> lst = new ArrayList<Integer>();
