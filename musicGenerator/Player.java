@@ -17,23 +17,24 @@ public class Player {
     
     public void open() {
     	try {
-			this.midiSynth = MidiSystem.getSynthesizer();
-		} catch (MidiUnavailableException e) {
-			
+		this.midiSynth = MidiSystem.getSynthesizer();
+	} 
+	catch (MidiUnavailableException e) {
 			e.printStackTrace();
-		}
+	}
     	
     	this.instr = midiSynth.getDefaultSoundbank().getInstruments();
     	this.mChannels = midiSynth.getChannels(); // previously this.mChannels
     	try {
-			midiSynth.open();
-		} catch (MidiUnavailableException e) {
-			
-			e.printStackTrace();
-		}
+		midiSynth.open();
+	} 
+	catch (MidiUnavailableException e) {
+		e.printStackTrace();
+	}
     	midiSynth.loadInstrument(instr[0]);
     	
     }
+	
     public void play(int note) {
        this.mChannels[0].noteOn(note, 100);
     }
