@@ -1035,14 +1035,14 @@ public static void superWind(ArrayList<String> scale, int ms){
 	public static void skip(List<String> scale, int measures, int beats, int range, int ms) throws MidiUnavailableException {
 		
 		
-			Synthesizer midiSynth = MidiSystem.getSynthesizer();
-			midiSynth.open();
+		Synthesizer midiSynth = MidiSystem.getSynthesizer();
+		midiSynth.open();
 	        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
 	        MidiChannel[] mChannels = midiSynth.getChannels();
 	        midiSynth.loadInstrument(instr[0]);
 	        
 	   
-		    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		
 		
 		for(int m = 0; m < measures; m++) {
@@ -1057,24 +1057,25 @@ public static void superWind(ArrayList<String> scale, int ms){
 					   mChannels[0].noteOn(Convert.midiNums(scale.get(0))[range], 100);
 					   map.put(b, 0);
 		               
-				}  if(up < down) {
-		        	   int index = Convert.random(0, scale.size());
-		        	   mChannels[0].noteOn(Convert.midiNums(scale.get(index))[range], 100);
-		        	   map.put(b, index);
-		              
-		       }
+				   }  
+				   if(up < down) {
+		        	 	int index = Convert.random(0, scale.size());
+		        	   	mChannels[0].noteOn(Convert.midiNums(scale.get(index))[range], 100);
+		        	   	map.put(b, index);
+		        	   }
 				
-			}     else {
-	                if(map.containsKey(b)) {
-	                   mChannels[0].noteOn(Convert.midiNums(scale.get(map.get(b)))[range], 100);
+				}     
+				else {
+	               			 if(map.containsKey(b)) {
+	                  			 mChannels[0].noteOn(Convert.midiNums(scale.get(map.get(b)))[range], 100);
 		
-	        	   	   	   
-		}
-		}
-		} leftShift(scale, 1); 
+	        	   	   	   }
+				}
+			} 
+			leftShift(scale, 1); 
 		}
 		
-}  
+	}  
 	
 	public static void wind(Player p, String keynote, int ms){
 		
@@ -1083,11 +1084,10 @@ public static void superWind(ArrayList<String> scale, int ms){
 		
 		Thread bassLine = new Thread() {
 		       public void run(){
-		    	  
-					Compose.randomPhrase(p, Scale.pentatonic(keynote), infinity, 16, 2, ms);
+		       		Compose.randomPhrase(p, Scale.pentatonic(keynote), infinity, 16, 2, ms);
 			        return;
-		     }
-		   };
+		       }
+		};
 		   
 		bassLine.start();
 		Compose.randomPhrase(p, Scale.minor(keynote), infinity, infinity, 4, ms);
@@ -1106,52 +1106,53 @@ public static void superWind(ArrayList<String> scale, int ms){
 			
 		}
 	}
+	
 	public static void echoChamber(List<String> scale, int ms){
 		
-		    Player p = new Player();
+		Player p = new Player();
 	        Map<Integer, String> repeat = new HashMap<Integer, String>();
             
-            int b = 0;
-            int counter = 1;
+            	int b = 0;
+            	int counter = 1;
             
-            while(true){
+            	while(true){
                    
-            	if(counter%4==0) {
-                	 leftShift(scale, 2);
-            		//Collections.shuffle(scale);
-                  }
-                  counter++;
-                  Beat.cut(ms);
+            		if(counter%4==0) {
+                		 leftShift(scale, 2);
+            			//Collections.shuffle(scale);
+                  	}
+                  	counter++;
+			Beat.cut(ms);
                    
-                   int up = Convert.random(0,4);
-                   int down = Convert.random(0,4);
+                   	int up = Convert.random(0,4);
+                   	int down = Convert.random(0,4);
                   
-                   if(up == 0 && down == 0) { 
-                	   b = 0;
+                  	 if(up == 0 && down == 0) { 
+                	   	b = 0;
                    
-                 } if(up==down){
-                       p.mChannels[0].noteOn(Convert.midiNums(scale.get(0))[b%2==0? 3 : 2], 100);
-                       repeat.put(b, scale.get(0));
-                       b++;
-                 } if(up > down){
-                       repeat.put(b, scale.get(Convert.random(0, scale.size())));
-                       p.mChannels[0].noteOn(Convert.midiNums(scale.get(Convert.random(3,5)))[3], 100); // [3]
-                       p.mChannels[0].noteOn(Convert.midiNums(repeat.get(b))[3], 100);
+                 	} 
+			if(up==down){
+                       		p.mChannels[0].noteOn(Convert.midiNums(scale.get(0))[b%2==0? 3 : 2], 100);
+                       		repeat.put(b, scale.get(0));
+                      		 b++;
+                 	} 
+			if(up > down){
+                        	repeat.put(b, scale.get(Convert.random(0, scale.size())));
+                       		p.mChannels[0].noteOn(Convert.midiNums(scale.get(Convert.random(3,5)))[3], 100); // [3]
+                       		p.mChannels[0].noteOn(Convert.midiNums(repeat.get(b))[3], 100);
                     
                 
-                 } if(repeat.containsKey(b)){
-                      p.mChannels[0].noteOn(Convert.midiNums(repeat.get(b))[3], 100);  //[3]
-              }
-         } 
-    }
-	
-
-	
+                 	} 
+			if(repeat.containsKey(b)){
+                      		p.mChannels[0].noteOn(Convert.midiNums(repeat.get(b))[3], 100);  //[3]
+              		}
+         	} 
+    	}
 	
 	public static <T> void arpeggiatorUp(ArrayList<String> chord,  int ms) {
 		  
-		 Player p = new Player();
-		 p.open();
+		Player p = new Player();
+		p.open();
 	        List<Integer> nums = Convert.toMidi(chord);
 	        
 	        for(int i = 8; i < nums.size()-6; i++) { 
@@ -1163,24 +1164,45 @@ public static void superWind(ArrayList<String> scale, int ms){
 		  return;
 	}
 	
+	public static void runOrJump(Player p, ArrayList<String> scale, int ms, int...prog){
+		
+		List<Integer> notes = new ArrayList<>();
+		Arrays.stream(prog).forEach( x-> notes.addAll( Convert.toMidi( Scale.modes(scale).get(x-1), 2 ) ) );
+		int index = 0; 
+		int s = notes.size();
+		int jump = 1;
+							     
+		while(true){
+			
+			for(int i = 0; i < s; i++){
+			
+				p.play(notes.get(index), ms);
+				index = (index + jump) % s;
+			}
+			jump++;
+		}
+	
+	}
+	
 	public static void arpeggiatorDown(ArrayList<String> chord,  int ms){
 		
 		try {
 			Synthesizer midiSynth = MidiSystem.getSynthesizer();
 			midiSynth.open();
-	        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-	        MidiChannel[] mChannels = midiSynth.getChannels();
-	        midiSynth.loadInstrument(instr[0]);
+	        	Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+	       		 MidiChannel[] mChannels = midiSynth.getChannels();
+	       		 midiSynth.loadInstrument(instr[0]);
 	    
-	        List<Integer> lst = Convert.toMidi(chord);
+	        	 List<Integer> lst = Convert.toMidi(chord);
 	        
-	        for(int i = lst.size()-8; i >= 8; i--) {
-	        	Beat.cut(ms);
-	        	mChannels[0].noteOn(lst.get(i),  100);
+	       	         for(int i = lst.size()-8; i >= 8; i--) {
+	        	 Beat.cut(ms);
+	        	 mChannels[0].noteOn(lst.get(i),  100);
 	        	
-	        }
+	       		 }
 	        
-		} catch (MidiUnavailableException e) {
+		} 
+		catch (MidiUnavailableException e) {
 			
 			e.printStackTrace();
 		}
@@ -1188,7 +1210,7 @@ public static void superWind(ArrayList<String> scale, int ms){
 	    return;  
 	}
         
-public static void randomPhrase(Player p, List<String> scale, int measures, int beats, int range, int ms){
+	public static void randomPhrase(Player p, List<String> scale, int measures, int beats, int range, int ms){
 	
 	    
 	    Map<Integer, String> repeat = new HashMap<Integer, String>();
