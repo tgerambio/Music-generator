@@ -16,26 +16,25 @@ public class Main{
 		   
 		
 
-		public static void main(String[] args){
+public static void main(String[] args){
 			
 			
-			System.out.println("What note?");
-			Scanner input = new Scanner(System.in);
-			String keyNote = input.nextLine();
+	System.out.println("What note?");
+	Scanner input = new Scanner(System.in);
+	String keyNote = input.nextLine();
 	
-				
-			while(!Arrays.asList(Scale.chromatic).contains(keyNote.substring(0,1).toUpperCase() + keyNote.substring(1))){
-				  System.out.println("Try again.");
-                  keyNote = input.nextLine();
-            }
+	while(!Arrays.asList(Scale.chromatic).contains(keyNote.substring(0,1).toUpperCase() + keyNote.substring(1))){
+		System.out.println("Try again.");
+                keyNote = input.nextLine();
+        }
 	    	
-			keyNote = keyNote.substring(0,1).toUpperCase() + keyNote.substring(1);
+	keyNote = keyNote.substring(0,1).toUpperCase() + keyNote.substring(1);
 			
-			input.close();
+	input.close();
 			
-			Player p = new Player();
+	Player p = new Player();
 	 
-	        String s =  keyNote;
+	String s =  keyNote;
 	       
 	        int[] prog = {1,5,6,4};
 	        ArrayList<String> scale = Scale.minor(keyNote);
