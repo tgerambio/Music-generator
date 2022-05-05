@@ -34,7 +34,7 @@ public class Modulation {
 	        return circle;
 		
 		
-}
+	}
 	public static ArrayList<ArrayList<ArrayList<String>>> circ5Scales(String note){
 		
 		ArrayList<ArrayList<ArrayList<String>>> list = new ArrayList<ArrayList<ArrayList<String>>>();
@@ -75,6 +75,7 @@ public class Modulation {
 		return cir;
 		
 	}
+	
 	public static ArrayList<ArrayList<ArrayList<String>>> progList(ArrayList<String> scale){
 		
 		ArrayList<ArrayList<ArrayList<String>>> list = new ArrayList<ArrayList<ArrayList<String>>>();
@@ -95,6 +96,7 @@ public class Modulation {
         	return list;
 
 	}
+	
 	public static ArrayList<ArrayList<ArrayList<String>>> bigProg(ArrayList<String> scale){
 		
 		ArrayList<ArrayList<ArrayList<String>>> list = new ArrayList<ArrayList<ArrayList<String>>>();
@@ -138,7 +140,7 @@ public class Modulation {
 		return modal;
 	}
 	
-    public static ArrayList<String> keyId(ArrayList<String> chord){// returns a list of keys input chord is in
+    	public static ArrayList<String> keyId(ArrayList<String> chord){// returns a list of keys input chord is in
 		
 	        ArrayList<String> keys = new ArrayList<String>();
 		Map<String, ArrayList<ArrayList<String>>> all = Modulation.allKeyChords(false);
@@ -152,11 +154,7 @@ public class Modulation {
 		
    }	
     
-    
-    
-    
-    
-    public static ArrayList<String> secondaryDominant(List<String> chord){ 
+   public static ArrayList<String> secondaryDominant(List<String> chord){ 
     	
     	return Chord.dom7(circleOfFifths(chord.get(0)).get(1).get(0));
     }
@@ -184,11 +182,7 @@ public class Modulation {
 	   	return allPossKeys;
 	}
 	
-	
-	
-	
-	
-	 public static List<List<String>> invert(List<String> chord) {
+ 	 public static List<List<String>> invert(List<String> chord) {
 		
 	
 		List<List<String>> inversions = new ArrayList<List<String>>();
@@ -198,7 +192,7 @@ public class Modulation {
 		        	cho.add(chord.get(note));
 		        }
 		
-	    for(int i = 0; i < cho.size(); i++){
+	    	for(int i = 0; i < cho.size(); i++){
 			
 			inversions.add(new ArrayList<String>(cho));
 			cho.add(cho.get(0));
@@ -208,22 +202,23 @@ public class Modulation {
 		return inversions;
 	}
 	
-	 public static Map<String, ArrayList<ArrayList<String>>> allKeyChords(boolean print){ // this one works
+	public static Map<String, ArrayList<ArrayList<String>>> allKeyChords(boolean print){ // this one works
 		
-	      Map<String, ArrayList<ArrayList<String>>> x = new HashMap<String, ArrayList<ArrayList<String>>>();
-		  String[] chrom = Arrays.copyOfRange(Scale.chromatic, 0, 12);
+	   	Map<String, ArrayList<ArrayList<String>>> x = new HashMap<String, ArrayList<ArrayList<String>>>();
+		String[] chrom = Arrays.copyOfRange(Scale.chromatic, 0, 12);
 		
-		  for(String note : chrom) {
-			  x.put(note, Chord.keyChords(Scale.major(note)));
-		  }
+		for(String note : chrom) {
+			x.put(note, Chord.keyChords(Scale.major(note)));
+		}
 		  
 		 if(print) {
-			  for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : x.entrySet()) {
+			for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : x.entrySet()) {
 		         	System.out.println("Key: " + entry.getKey() + entry.getValue());
 			  } 
 		  }  
 		  return x;
-		 }	
+		 
+	}	
 	
 
-	}
+}
