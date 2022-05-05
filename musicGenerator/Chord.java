@@ -28,8 +28,6 @@ public class Chord {
 		
 	}
 	
-	
-	
 	public static ArrayList<String> enrich(ArrayList<String> chord, int...dups){
 		for(int x : dups) {
 			chord.add(chord.get(x-1));
@@ -37,13 +35,7 @@ public class Chord {
 		return chord;
 	}
 	
-	
-	
-	
 	public static ArrayList<ArrayList<String>> keyChords(ArrayList<String> scale){
-		    
-		   
-		   
 		    
 		    ArrayList<ArrayList<String>> chords = new ArrayList<ArrayList<String>>();
 		    ArrayList<String> triad = new ArrayList<String>();
@@ -66,13 +58,15 @@ public class Chord {
 			return chords;
 			
 			
-    }	
+    	}	
+	
 	public static ArrayList<String> toFlat(ArrayList<String> chord){
 		
 		return chord.stream()
 			    .map((x)-> Note.toFlat(x))
 		            .collect(Collectors.toCollection(ArrayList::new));
 	}
+	
 	public static ArrayList<String> randomAugment(ArrayList<String> chord){ 
     
 		int x = Convert.random(0, 3);
