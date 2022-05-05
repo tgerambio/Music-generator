@@ -89,9 +89,9 @@ public class Convert {
 				}
 			} 
 			return lst.stream()
-					  .distinct()
-					  .sorted()
-					  .collect(Collectors.toList());
+				  .distinct()
+				  .sorted()
+				  .collect(Collectors.toList());
 			  
 					    
 	}
