@@ -25,7 +25,7 @@ public class Convert {
     	}	
 	
 	
-	public static int random(int min, int max) { // random in from min to max-1, inclusive
+	public static int random(int min, int max) { // random in from min to max-1
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
     
