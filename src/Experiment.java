@@ -28,13 +28,13 @@ public class Experiment {
 		Player x = new Player();
 		x.open();
 		while(true) {
-		for(ArrayList<String> mode : Scale.modes(scale)) {
-			for(String note : mode) {
-				x.mChannels[1].noteOn(Convert.midiNums(note)[Convert.random(2,5)], 100);
-				Beat.cut(note.equals(scale.get(0)) || note.equals(scale.get(4)) ? ms : ms/4);
+			for(ArrayList<String> mode : Scale.modes(scale)) {
+				for(String note : mode) {
+					x.mChannels[1].noteOn(Convert.midiNums(note)[Convert.random(2,5)], 100);
+					Beat.cut(note.equals(scale.get(0)) || note.equals(scale.get(4)) ? ms : ms/4);
 			
+				}
 			}
-		}
 		}
 		
 	}
@@ -43,8 +43,8 @@ public class Experiment {
 		p.open();
 		
 		while(true) {
-		p.mChannels[0].noteOn(100, 100);
-		Beat.cut(220);	
+			p.mChannels[0].noteOn(100, 100);
+			Beat.cut(220);	
 		
 		}
 
