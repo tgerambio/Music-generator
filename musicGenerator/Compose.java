@@ -38,36 +38,35 @@ public class Compose {
 	
 	public static Object recurseSeed(Player p, ArrayList<String> scale,  int ms) {
 		
-	    ArrayList<ArrayList<String>> chords = Chord.keyChords(scale);
+		ArrayList<ArrayList<String>> chords = Chord.keyChords(scale);
 	    
 		while(true) {
 			
-	    	int n = 0;
+	    		int n = 0;
 	    	
-	    	List<Integer> x = Convert.toMidi(Chord.addPassingTone(chords.get(n), 2));
-	        int s = x.indexOf(Convert.lowestNotes().get(scale.get(0)));
+	    		List<Integer> x = Convert.toMidi(Chord.addPassingTone(chords.get(n), 2));
+	        	int s = x.indexOf(Convert.lowestNotes().get(scale.get(0)));
 
-	        int cut = 0;
+	       		 int cut = 0;
 	          
-	        //for(int note2 = s+7; note2 < 24; note2++) {
-	        for(int note2 = s; note2 < s+16; note2++) {
+	        	//for(int note2 = s+7; note2 < 24; note2++) {
+	        	for(int note2 = s; note2 < s+16; note2++) {
 	           
-	        	Collections.rotate(x, cut%3 + 3); // changing leftshift cut%3+# changes composition drastically
-	            int m = x.get(note2);
-	            p.mChannels[0].noteOn(m < 70 ? m : m-36,  100 ); // shifts pitches back into tonal center
-	          //p.mChannels[0].noteOn(m, 100);
-	          //p.mChannels[0].noteOn(x.get(Convert.random(x.size()-24, x.size()-8)), 50);
+	        		Collections.rotate(x, cut%3 + 3); // changing leftshift cut%3+# changes composition drastically
+	            		int m = x.get(note2);
+	           		 p.mChannels[0].noteOn(m < 70 ? m : m-36,  100 ); // shifts pitches back into tonal center
+	          		//p.mChannels[0].noteOn(m, 100);
+	          		//p.mChannels[0].noteOn(x.get(Convert.random(x.size()-24, x.size()-8)), 50);
 
-	            cut++;
-	            Beat.cut(cut%2 == 0 ? ms : 0);  // notice the 0!! will then play simultaneously
+	           		 cut++;
+	            		 Beat.cut(cut%2 == 0 ? ms : 0);  // notice the 0!! will then play simultaneously
 	    		
-	    	}
+	    		}
 	    	
 			return recurseSeed(p, Scale.minor(scale.get(Convert.random(3, 5))), ms); // always return 4th or 5th
-			
-			
-	    }
+		}
 	}
+	
 	//*******************************************************************************
 	public static void balla(ArrayList<String> scale,  int ms, int...progression) { // minor 1,5,6,4 !!
 		
@@ -169,12 +168,12 @@ public class Compose {
 	}
 	
 	
-	public static void windModes(ArrayList<String> scale, int beats, int ms, int...progression) {
+public static void windModes(ArrayList<String> scale, int beats, int ms, int...progression) {
 		
-		Player p = new Player();
-		ArrayList<ArrayList<String>> modes = Scale.modes(scale);
+	Player p = new Player();
+	ArrayList<ArrayList<String>> modes = Scale.modes(scale);
 		
-		while(true) {
+	while(true) {
 		for(int degree : progression) {
 		
 			for(int b = 0; b < beats; b++) {
@@ -208,22 +207,21 @@ public static List<Integer> drop(List<Integer> chord, int index){ // index not 0
 }
 
 public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int count, int drop, int latency, int ms){
-		    p.mChannels[0].noteOff(ms);
+		
+	p.mChannels[0].noteOff(ms);
 		       
-		         
-		         if(count == 0){
-		           return null;
-		        }
-		     
-		        for(int note : chord){
-		            p.mChannels[0].noteOn(note < 24? note + 60 : note, 75);
-		            Beat.cut(drop%2==0? ms/latency : 0);  //Beat.cut(drop%2==0? ms/3 : 0) !!
+	 if(count == 0){
+	 	return null;
+	 }
+	 for(int note : chord){
+	 	p.mChannels[0].noteOn(note < 24? note + 60 : note, 75);
+		Beat.cut(drop%2==0? ms/latency : 0);  //Beat.cut(drop%2==0? ms/3 : 0) !!
 		           
-		        }
-		        Beat.cut(drop%1==1? ms : 0);
+	 }
+	 Beat.cut(drop%1==1? ms : 0);
 		       
-		        return recursiveDrop(p, drop(chord, drop), count - 1, drop-1, latency, ms);
-		}
+	 return recursiveDrop(p, drop(chord, drop), count - 1, drop-1, latency, ms);
+}
     //**************************************************************************************************************
 	public static void dropper(ArrayList<String> chord) {
 		Player p = new Player();
@@ -425,11 +423,10 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 			    		if(a%3==0) {
 			    			p.mChannels[0].noteOn(Convert.toMidi(chord, 1).get(1), 75);
 
-                        }
-			    		
+                        		}
 			    		Beat.cut(ms);
-			    	} 
-		}
+				} 
+			}
 			    
 			
 		
@@ -495,7 +492,8 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 				}else {
 					progression[i]++;
 				}
-			} Modulation.toRelativeMinOrMaj(scale);
+			}
+			Modulation.toRelativeMinOrMaj(scale);
 		}
 	}
 
@@ -814,38 +812,40 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
       }
       
 }
-	public static void grow(Player p, ArrayList<String> scale, int ms) {
+public static void grow(Player p, ArrayList<String> scale, int ms) {
 		
-		int baseD = ms/2, baseH = ms*2;
-		scale.add(scale.get(0));
+	int baseD = ms/2, baseH = ms*2;
+	scale.add(scale.get(0));
 		
 		
-		while(true) {
+	while(true) {
 			
-			for(ArrayList<String>  mode : Scale.modes(scale)) {
-				Collections.shuffle(mode);
-			    jump(p, mode.get(Convert.random(0, mode.size()-1)), ms); 
-			    Collections.shuffle(scale);
+		for(ArrayList<String>  mode : Scale.modes(scale)) {
+			Collections.shuffle(mode);
+			jump(p, mode.get(Convert.random(0, mode.size()-1)), ms); 
+		        Collections.shuffle(scale);
 			   
-				for(int i = 0; i < mode.size(); i++) {
-					p.mChannels[0].noteOn(Convert.random(0, mode.size()-1), ms); 
-					for(int x : Convert.midiNums(mode.get(i))) {
-						p.mChannels[0].noteOn(x, 100);
-						Beat.cut(i%2==0? ms : i%3==0? baseD : baseH);  
+			for(int i = 0; i < mode.size(); i++) {
+				p.mChannels[0].noteOn(Convert.random(0, mode.size()-1), ms); 
+				for(int x : Convert.midiNums(mode.get(i))) {
+					p.mChannels[0].noteOn(x, 100);
+					Beat.cut(i%2==0? ms : i%3==0? baseD : baseH);  
 			        } 
-					Collections.rotate(scale, Convert.random(1, scale.size()));
-		  }
-	    }
+				Collections.rotate(scale, Convert.random(1, scale.size()));
+		 	 }
+	    	}
 	  }
-	}
-	public static void dream(String keyNote) {
+}
+	
+public static void dream(String keyNote) {
 		
-		for(String x : Scale.minor(keyNote)) {
+	for(String x : Scale.minor(keyNote)) {
 			
-			Compose.fractalThreads(Scale.pentatonic(x), 1, 1050, 150);
-		}
+		Compose.fractalThreads(Scale.pentatonic(x), 1, 1050, 150);
 	}
-	public static void fractalThreads(ArrayList<String> scale, int cycles, int compounder, int ms){
+}
+	
+public static void fractalThreads(ArrayList<String> scale, int cycles, int compounder, int ms){
 		                                                                                  /* compounder must be > ms
 		                                                                                  or it will slowly create a 
 		                                                                                  fork bomb */
@@ -853,8 +853,8 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 		
 		for(ArrayList<String> chord : Chord.keyChords(scale)) {
 			corners.add( ()-> Compose.arpeggiatorUp(chord, ms) );
-		    corners.add( ()-> Compose.arpeggiatorUp(scale, ms) );
-			}
+		    	corners.add( ()-> Compose.arpeggiatorUp(scale, ms) );
+		}
  
 		//Collections.shuffle(corners);
 		int c = 0;
@@ -862,10 +862,10 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 
 			for(Runnable runnable : corners) {
 				new Thread(runnable).start();
-			    c++;
+			    	c++;
 				Beat.cut(compounder);
 			
-		}
+			}
 		}
 	}
 	
@@ -873,39 +873,41 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 		try {
 			Synthesizer midiSynth = MidiSystem.getSynthesizer();
 			midiSynth.open();
-	        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-	        MidiChannel[] mChannels = midiSynth.getChannels();
-	        midiSynth.loadInstrument(instr[0]);
+	        	Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+	        	MidiChannel[] mChannels = midiSynth.getChannels();
+	        	midiSynth.loadInstrument(instr[0]);
 			
-	        for(int b = 0; b < beats; b++) {
-	        	if(beatMap.containsKey(b)) {
+	        	for(int b = 0; b < beats; b++) {
+	        		if(beatMap.containsKey(b)) {
 	        		
 	        		mChannels[0].noteOn(Convert.midiNums(scale.get(beatMap.get(b)))[octave], 100);
-	        	} Beat.cut(ms);
-	        }
-		} catch (MidiUnavailableException e) {
+	        		} 
+				Beat.cut(ms);
+	        	}
+		} 
+		catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		}
 
 	
 		
-	}
+}
 	
 	
-	public static void playNote(String note, int range){
+public static void playNote(String note, int range){
 		Player p = new Player();
 		p.open();
         
         int mNote = Convert.midiNums(note)[range];
         p.mChannels[0].noteOn(mNote, 100);
         //midiSynth.close();
-	}
+}
 	
-	public static void x (List<String> scale, int loops, int measures, int beats, int ms) 
-	throws MidiUnavailableException{
+public static void x (List<String> scale, int loops, int measures, int beats, int ms) 
+throws MidiUnavailableException{
 		
-		Synthesizer midiSynth = MidiSystem.getSynthesizer();
-		midiSynth.open();
+	Synthesizer midiSynth = MidiSystem.getSynthesizer();
+	midiSynth.open();
         Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
         MidiChannel[] mChannels = midiSynth.getChannels();
         midiSynth.loadInstrument(instr[0]);
@@ -916,42 +918,44 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
         	int left = Convert.random(0, 4);
         	int right = Convert.random(0, 4);
         	if(right == left) {
-               leftShift(scale, Convert.random(1, scale.size()));
+                leftShift(scale, Convert.random(1, scale.size()));
         	}
-			for(int m = 0; m < measures; m++) {
+		for(int m = 0; m < measures; m++) {
 				
-				mChannels[0].noteOn(Convert.midiNums(scale.get(0))[Convert.random(2, 5)], 80);
+			mChannels[0].noteOn(Convert.midiNums(scale.get(0))[Convert.random(2, 5)], 80);
 				
-			}   for(int b = 0; b < beats; b++) {
+		}   
+		
+		for(int b = 0; b < beats; b++) {
 				  
-				    int note = Convert.random(0, scale.size());
-				  
-				    mChannels[0].noteOn(Convert.midiNums(scale.get(note))[Convert.random(2,5)],100);
-				    Beat.cut(left < right? ms : ms/2);
-			}
+	       	 int note = Convert.random(0, scale.size());
+		 mChannels[0].noteOn(Convert.midiNums(scale.get(note))[Convert.random(2,5)],100);
+		 Beat.cut(left < right? ms : ms/2);
 		}
-		
-		
-		
 	}
+		
+		
+		
+}
 	
-		public static void circScaleTest(String note) throws MidiUnavailableException {
-			List<ArrayList<ArrayList<String>>> cir = Modulation.circ5Scales(note);
-			System.out.println(cir);
+public static void circScaleTest(String note) throws MidiUnavailableException {
 			
-			while(true) {
-			for(int i = 0; i < cir.size() ; i++){
-				if(i==6) i = 0;
-				Beat.cut(300);
+	List<ArrayList<ArrayList<String>>> cir = Modulation.circ5Scales(note);
+	System.out.println(cir);
+			
+	while(true) {
+		for(int i = 0; i < cir.size() ; i++){
+			if(i==6) i = 0;
+			Beat.cut(300);
 			    
-			    x(cir.get(i).get(1), 2, 8, 16, 300);
+			x(cir.get(i).get(1), 2, 8, 16, 300);
 			
-			}
 		}
 	}
+}
 	
 	
-	public static void superWind(ArrayList<String> scale, int ms){
+public static void superWind(ArrayList<String> scale, int ms){
 		
 		List<ArrayList<String>> modes = Scale.modes(scale);
 	
