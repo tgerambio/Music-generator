@@ -125,47 +125,48 @@ public class Compose {
 	    	}   
 	    }
       } 
-	}
-	//******************************************************************************************************
-	public static void bigOne(ArrayList<String> scale, int cutMs, int latency, int ms, int...progression) { //   major  4,7,3,6,2,3,1
-		   
-		Player p = new Player();
-		Runnable e =()-> Compose.genericProg(p, scale,ms, progression); 
+}
 
-    	
-	       	new Thread(e).start();
-		   	Beat.cut(cutMs);
-		   	new Thread(e).start();
+//******************************************************************************************************
+
+public static void bigOne(ArrayList<String> scale, int cutMs, int latency, int ms, int...progression) { //   major  4,7,3,6,2,3,1
 		   
-	}
+	Player p = new Player();
+	Runnable e =()-> Compose.genericProg(p, scale,ms, progression); 
+
+	new Thread(e).start();
+	Beat.cut(cutMs);
+        new Thread(e).start();
+		   
+}
 	
-	public static void rc_mergeList(ArrayList<String> scale) {
+public static void rc_mergeList(ArrayList<String> scale) {
 		
-		Player p = new Player();
+	Player p = new Player();
 		
-		for(ArrayList<String> chord : Chord.keyChords(scale)) {
-			recursiveDrop(p, Convert.toMidi(Chord.toSeventh(chord), 4), 8, 4, 4, 100);
-		}
+	for(ArrayList<String> chord : Chord.keyChords(scale)) {
+		recursiveDrop(p, Convert.toMidi(Chord.toSeventh(chord), 4), 8, 4, 4, 100);
 	}
+}
 	
-	public static void genericProg(Player p, ArrayList<String> scale, int ms, int...progression) {
+public static void genericProg(Player p, ArrayList<String> scale, int ms, int...progression) {
 		
 		
-	 	while(true) {
-		 	for(int j = 4; j >=3; j--){
+	while(true) {
+ 		for(int j = 4; j >=3; j--){
 			
-				for(int i : progression) {
+			for(int i : progression) {
 				
-					recursiveDrop(p, Convert.toMidi(Chord.toSeventh(Chord.keyChords(scale).get(i-1)), j), 4, 4, 4, ms);
-			    		// recursiveDrop(p, Convert.mergeList(Chord.augment(Chord.keyChords(scale).get(i-1), 2), j), 4, 4, 4, ms);
-				}
+				recursiveDrop(p, Convert.toMidi(Chord.toSeventh(Chord.keyChords(scale).get(i-1)), j), 4, 4, 4, ms);
+			    	// recursiveDrop(p, Convert.mergeList(Chord.augment(Chord.keyChords(scale).get(i-1), 2), j), 4, 4, 4, ms);
 			}
 		}
 	}
+}
 	
-	public static int[] intervals() {
-		return new int[] {0,3,7,8};
-	}
+public static int[] intervals() {
+	return new int[] {0,3,7,8};
+}
 	
 	
 public static void windModes(ArrayList<String> scale, int beats, int ms, int...progression) {
@@ -223,152 +224,155 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 	 return recursiveDrop(p, drop(chord, drop), count - 1, drop-1, latency, ms);
 }
     //**************************************************************************************************************
-	public static void dropper(ArrayList<String> chord) {
-		Player p = new Player();
+public static void dropper(ArrayList<String> chord) {
+	Player p = new Player();
 		
-		List<Integer> c = Convert.toMidi(chord, 5);
+	List<Integer> c = Convert.toMidi(chord, 5);
 		
-		int i = 0;
-		while(i < 5) {
-		   for(int note : c) {
-			   p.mChannels[0].noteOn(note, 100);
-			   Beat.cut(200);
-			   i++;
-		   } 
-		   c = drop(c, 2);
-		}
-		
+	int i = 0;
+	while(i < 5) {
+		for(int note : c) {
+			p.mChannels[0].noteOn(note, 100);
+			Beat.cut(200);
+			i++;
+		 } 
+		 c = drop(c, 2);
 	}
-	public static Map<Integer, Integer> mapper(Player p, ArrayList<String> scale, int measures, int beats, int[] prog, int ms) {
-		int[] one45 = {0,3,4};
-		Map<Integer, Integer> map = new HashMap<>();
-		while(map.size() < beats/2) {
-			for(int x = 0; x < beats; x++) {
-				if(map.containsKey(x)) {
-					continue;
-				}else {
-					if(Convert.random(0,2) == 0) {
-		               map.put(x, one45[Convert.random(0, 3)]);
-					}
+		
+}
+
+public static Map<Integer, Integer> mapper(Player p, ArrayList<String> scale, int measures, int beats, int[] prog, int ms) {
+	
+	int[] one45 = {0,3,4};
+	Map<Integer, Integer> map = new HashMap<>();
+	while(map.size() < beats/2) {
+		for(int x = 0; x < beats; x++) {
+			if(map.containsKey(x)) {
+				continue;
+			}
+			else {
+				if(Convert.random(0,2) == 0) {
+		               		map.put(x, one45[Convert.random(0, 3)]);
 				}
 			}
 		}
-		for(int i : prog) {
-			for(int m = 0; m < measures; m++) {
-				for(int b = 0; b < beats; b++) {
-					if(map.containsKey(b)){
-						p.mChannels[0].noteOn(Convert.toMidi(Scale.modes(scale).get(i-1), 1).get(map.get(b)), 100);
-					}
-					if(Convert.random(0, 2)== 1) {
-						p.mChannels[0].noteOn(Convert.toMidi(scale, 3).get(Convert.random(0, scale.size())), 100);
-					}
-				    Beat.cut(ms);
+	}
+	for(int i : prog) {
+		for(int m = 0; m < measures; m++) {
+			for(int b = 0; b < beats; b++) {
+				if(map.containsKey(b)){
+					p.mChannels[0].noteOn(Convert.toMidi(Scale.modes(scale).get(i-1), 1).get(map.get(b)), 100);
 				}
+				if(Convert.random(0, 2)== 1) {
+					p.mChannels[0].noteOn(Convert.toMidi(scale, 3).get(Convert.random(0, scale.size())), 100);
+				}
+				Beat.cut(ms);
+			}
 				
-			}
-		}
-		
-		return mapper(p, scale, measures, beats, prog, ms);
-		
-	}
-	
-	public static void bounce(Player p, int midiNote){
-		int ms = 1000;
-		while(ms > 20) {
-			p.mChannels[0].noteOn(midiNote, 100);
-			Beat.cut(ms);
-			ms -= ms/6;
-		}
-		
-	}
-	
-	public static void phraseProg(Player p, ArrayList<String> scale, int beats, int ms, int...prog) {
-		Map<Integer, Integer> phrase = new HashMap<>();
-		ArrayList<Integer> midi = Convert.toMidi(scale, 3);
-		int[] movement = {-2, -1, 0, 1, 2 };
-		int start = Convert.random(0, scale.size());
-		
-		for(int i = 0; i < beats; i++) {  // creates/maps random melodic line
-			if(Convert.random(0, 2) == 0) {
-				phrase.put(i, midi.get(start < 0 ? midi.size()+start : start%midi.size())); //so it never goes out of bounds
-				start += movement[Convert.random(0, movement.length)];                      //maybe make them just indexes?
-			}
-		}
-		
-		Runnable repeat = ()-> {  for(int b = 0; b < beats; b++) {
-			                          if(phrase.containsKey(b)) {
-				                          p.mChannels[0].noteOn(phrase.get(b), 100);
-				                      }
-			                          Beat.cut(ms);
-		                          }
-		                       };
-		
-	    while(true) {
-			for(int c : prog) {
-				ArrayList<Integer> m = Convert.toMidi(Chord.keyChords(scale).get(c-1), 3);
-				new Thread(repeat).start();
-				for(int note : m) {      
-					p.mChannels[0].noteOn(note, 100);
-				}
-				Beat.cut(ms*beats);
-			}
-		}
-		
-	}
-	
-	public static void variantProg(Player p, ArrayList<String> scale, int beats, int ms, int...prog) {
-		
-		int index = 0;
-		int[] changes = { -2, -1, 0, 1, 2 };
-		while(true) {
-			for(int chord : prog) {
-				for(int i = 0; i < beats; i++){
-					for(int note : Convert.toMidi(Chord.keyChords(scale).get(chord-1), 3)) {
-						p.mChannels[0].noteOn(note + (12*changes[(index++)%changes.length]), 100);
-						Beat.cut(ms);
-					} 
-				}
-			}
 		}
 	}
+		
+	return mapper(p, scale, measures, beats, prog, ms);
+		
+}
 	
-	public static void salsa(Player p, ArrayList<String> scale, int ms) {
+public static void bounce(Player p, int midiNote){
+	int ms = 1000;
+	while(ms > 20) {
+		p.mChannels[0].noteOn(midiNote, 100);
+		Beat.cut(ms);
+		ms -= ms/6;
+	}
+}
+	
+public static void phraseProg(Player p, ArrayList<String> scale, int beats, int ms, int...prog) {
 		
-		Map<Integer, Integer> map = new HashMap<>();
+	Map<Integer, Integer> phrase = new HashMap<>();
+	ArrayList<Integer> midi = Convert.toMidi(scale, 3);
+	int[] movement = {-2, -1, 0, 1, 2 };
+	int start = Convert.random(0, scale.size());
 		
-		while(true) {
+	for(int i = 0; i < beats; i++) {  // creates/maps random melodic line
+		if(Convert.random(0, 2) == 0) {
+			phrase.put(i, midi.get(start < 0 ? midi.size()+start : start%midi.size())); //so it never goes out of bounds
+			start += movement[Convert.random(0, movement.length)];                      //maybe make them just indexes?
+		}
+	}
+		
+	Runnable repeat = ()-> {  for(int b = 0; b < beats; b++) {
+			          	if(phrase.containsKey(b)) {
+				         	p.mChannels[0].noteOn(phrase.get(b), 100);
+				        }
+			                Beat.cut(ms);
+		                    }
+		                };
+		
+	while(true) {
+		for(int c : prog) {
+			ArrayList<Integer> m = Convert.toMidi(Chord.keyChords(scale).get(c-1), 3);
+			new Thread(repeat).start();
+			for(int note : m) {      
+				p.mChannels[0].noteOn(note, 100);
+			}
+			Beat.cut(ms*beats);
+		}
+	}
+		
+}
+	
+public static void variantProg(Player p, ArrayList<String> scale, int beats, int ms, int...prog) {
+		
+	int index = 0;
+	int[] changes = { -2, -1, 0, 1, 2 };
+	while(true) {
+		for(int chord : prog) {
+			for(int i = 0; i < beats; i++){
+				for(int note : Convert.toMidi(Chord.keyChords(scale).get(chord-1), 3)) {
+					p.mChannels[0].noteOn(note + (12*changes[(index++)%changes.length]), 100);
+					Beat.cut(ms);
+				} 
+			}
+		}
+	}
+}
+	
+public static void salsa(Player p, ArrayList<String> scale, int ms) {
+		
+	Map<Integer, Integer> map = new HashMap<>();
+		
+	while(true) {
 			    
-			    int i = Convert.random(0, scale.size());
-			    ArrayList<String> chord = Chord.keyChords(scale).get(i);
-			    chord.add(chord.get(1));
-			    List<Integer> midi = Convert.toMidi(chord, 3);
+    		int i = Convert.random(0, scale.size());
+	        ArrayList<String> chord = Chord.keyChords(scale).get(i);
+		chord.add(chord.get(1));
+		List<Integer> midi = Convert.toMidi(chord, 3);
 			   
-			    for(int  b = 0; b < 8; b++) {
+		for(int  b = 0; b < 8; b++) {
 			    	
-			    	if(Convert.random(0, 2) == 0) {
+			if(Convert.random(0, 2) == 0) {
 			    		
-			    		map.put(b, midi.get(Convert.random(0, midi.size())));
+			    	map.put(b, midi.get(Convert.random(0, midi.size())));
+			}
+		}
+			    
+	    	for(int bb = 0; bb < 2; bb++) {
+			    	
+			    if(bb > 0) {
+			    		
+			    	for(Map.Entry<Integer, Integer> e : map.entrySet()) {
+			    			
+			    		int eVal = e.getValue();
+			    			
+			    		while(!Convert.toMidi(scale).contains(++eVal)) {
+			    				
+			    			if(eVal > 80) {
+			    					
+			    				eVal -= 24;
+			    			}
+			    		}
+			    		map.put(e.getKey(), eVal);
 			    	}
 			    }
-			    
-			    for(int bb = 0; bb < 2; bb++) {
-			    	
-			    	if(bb > 0) {
-			    		
-			    		for(Map.Entry<Integer, Integer> e : map.entrySet()) {
-			    			
-			    			int eVal = e.getValue();
-			    			
-			    			while(!Convert.toMidi(scale).contains(++eVal)) {
-			    				
-			    				if(eVal > 80) {
-			    					
-			    					eVal -= 24;
-			    				}
-			    			}
-			    			map.put(e.getKey(), eVal);
-			    		}
-			    	}
 			    	
 			    	for(int m = 0; m < 2; m++) {
 			    		
@@ -576,50 +580,52 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
         	Compose.windProghelper(p, avoidConcurrent, beats, 3, ms, prog);
         }
        
-	}
-	public static Map<Integer, ArrayList<Integer>> midiMap(ArrayList<String> scale){// create a midi file??
-		Map<Integer, ArrayList<Integer>> map = new HashMap<>();
-		for(int i = 0; i < 20; i++) {
+}
+public static Map<Integer, ArrayList<Integer>> midiMap(ArrayList<String> scale){// create a midi file??
+	Map<Integer, ArrayList<Integer>> map = new HashMap<>();
+	for(int i = 0; i < 20; i++) {
 
-			if(Convert.random(0, 2)==1) {
-				map.put(i, new ArrayList<Integer>());
-				map.get(i).add(Convert.midiNums(scale.get(i%scale.size()))[3]);
-				if(Convert.random(0, 2) == 1) {
-					map.get(i).add(Convert.midiNums(scale.get((i+2)%scale.size()))[3]);
-				}
+		if(Convert.random(0, 2)==1) {
+			map.put(i, new ArrayList<Integer>());
+			map.get(i).add(Convert.midiNums(scale.get(i%scale.size()))[3]);
+			if(Convert.random(0, 2) == 1) {
+				map.get(i).add(Convert.midiNums(scale.get((i+2)%scale.size()))[3]);
 			}
+		}
 			
-		}
-		return map;
 	}
-	public static void testMidiMap(Map<Integer, ArrayList<Integer>> map, Player p, int ms) {
-		//Map<Integer, ArrayList<Integer>> map = midiMap(Scale.minor("G"));
-		while(true) {
-			for(int i = 0; i < 20; i++) {
-				if(map.containsKey(i)) {
-					for(int note : map.get(i)) {
-						p.mChannels[0].noteOn(note, 100);
+	return map;
+}
+	
+public static void testMidiMap(Map<Integer, ArrayList<Integer>> map, Player p, int ms) {
+	//Map<Integer, ArrayList<Integer>> map = midiMap(Scale.minor("G"));
+	while(true) {
+		for(int i = 0; i < 20; i++) {
+			if(map.containsKey(i)) {
+				for(int note : map.get(i)) {
+					p.mChannels[0].noteOn(note, 100);
 					
-					}Beat.cut(ms);
 				}
+				Beat.cut(ms);
 			}
 		}
 	}
-	//****************************************************************************************************************
-	public static void toolProg(Player p, ArrayList<String> scale, int ms, int beats, int...prog) {
-		p.mChannels[0].programChange(32); //32
-		p.mChannels[1].programChange(46); //46(at 1/2 vol), 8
-		Map<Integer, Integer> bassLine = new HashMap<>();
-		int[] oneFour5 = {0, 3, 4};
-		int count = 4;
-		while(true) {
-			if(beats == 0) return;
-			for(int i = 0; i < beats; i++) {
-				if(Convert.random(0, 2) == 0) {
-					bassLine.put(i, oneFour5[Convert.random(0, 3)]);
-				}
+}
+//****************************************************************************************************************
+public static void toolProg(Player p, ArrayList<String> scale, int ms, int beats, int...prog) {
+	p.mChannels[0].programChange(32); //32
+	p.mChannels[1].programChange(46); //46(at 1/2 vol), 8
+	Map<Integer, Integer> bassLine = new HashMap<>();
+	int[] oneFour5 = {0, 3, 4};
+	int count = 4;
+	while(true) {
+		if(beats == 0) return;
+		for(int i = 0; i < beats; i++) {
+			if(Convert.random(0, 2) == 0) {
+				bassLine.put(i, oneFour5[Convert.random(0, 3)]);
+			}
 			for(int c : prog) {
-				p.mChannels[0].allNotesOff();
+			p.mChannels[0].allNotesOff();
 			
 				for(int b = 0; b < beats; b++) {
 					if(bassLine.containsKey(b)) {
@@ -637,47 +643,48 @@ public static List<Integer> recursiveDrop(Player p, List<Integer> chord, int cou
 					}
 			}
 		}
-        if(bassLine.size()==beats) {
+        	if(bassLine.size()==beats) {
         	count--;
-        }
-        if(count < 1) {
+        	}
+        	if(count < 1) {
         	bassLine.clear();
         	beats--;
         	System.out.println(beats);
         	count = 4;
-        }
+        	}
 		
 		
 	}
 		
-	}
+}
 	
-	public static void secondaryDomProg(Player p, ArrayList<String> scale, int ms, int...prog) {
+public static void secondaryDomProg(Player p, ArrayList<String> scale, int ms, int...prog) {
 			
-		while(true) {
-			int octave = Convert.random(1,5);
-		        for(int c : prog) {
-					ArrayList<String> chord = Chord.keyChords(scale).get(c-1);
-					ArrayList<String> secDom = Modulation.secondaryDominant(chord);
-					chord.add(chord.get(0));
-					Collections.rotate(chord,Convert.random(0, 4));
-					Collections.rotate(secDom, octave);
-					for(int n : Convert.toMidi(secDom, octave)) {
-						p.mChannels[0].noteOn(n, 100);
-						Beat.cut(ms);
-					}
-					//Beat.cut(ms);
-					for(int n2 : Convert.toMidi(chord, octave)) {
-						p.mChannels[0].noteOn(n2, 100);
-						Beat.cut(ms);
-					}
+	while(true) {
+		int octave = Convert.random(1,5);
+		for(int c : prog) {
+			ArrayList<String> chord = Chord.keyChords(scale).get(c-1);
+				ArrayList<String> secDom = Modulation.secondaryDominant(chord);
+				chord.add(chord.get(0));
+				Collections.rotate(chord,Convert.random(0, 4));
+				Collections.rotate(secDom, octave);
+				for(int n : Convert.toMidi(secDom, octave)) {
+					p.mChannels[0].noteOn(n, 100);
+					Beat.cut(ms);
+				}
+				//Beat.cut(ms);
+				for(int n2 : Convert.toMidi(chord, octave)) {
+					p.mChannels[0].noteOn(n2, 100);
+					Beat.cut(ms);
+				}
 			
 					
-				}
 		}
-			
 	}
-	public static void randomAugtst(ArrayList<String> scale, int loops, int ms) {
+			
+}
+	
+public static void randomAugtst(ArrayList<String> scale, int loops, int ms) {
 		
 		Player p = new Player();
 	
